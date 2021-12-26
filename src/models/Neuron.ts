@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { Connection } from "./Connection";
+import { Connection } from ".";
 
 export class Neuron {
   private _id: string;

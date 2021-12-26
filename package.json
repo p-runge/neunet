@@ -4,6 +4,10 @@
   "description": "A basic framework for neural networks",
   "private": "true",
   "main": "src/index.ts",
+  "scripts": {
+    "lint": "eslint --fix --ext .ts --max-warnings=0 .",
+    "prepare": "husky install"
+  },
   "keywords": [
     "neural-network"
   ],
@@ -11,6 +15,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^8.5.0",
+    "husky": "^7.0.4",
     "typescript": "^4.5.4"
   },
   "dependencies": {
