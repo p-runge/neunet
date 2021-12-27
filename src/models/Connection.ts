@@ -1,3 +1,4 @@
+import { random } from "../utils";
 import { v4 as uuidv4 } from "uuid";
 import { Neuron } from ".";
 
@@ -7,7 +8,10 @@ export class Connection {
 
   constructor(private _from: Neuron, private _to: Neuron) {
     this._id = uuidv4();
-    this._weight = Math.random();
+
+    const minWeight = -4;
+    const maxWeight = 4;
+    this._weight = random(minWeight, maxWeight);
   }
 
   get id(): string {
@@ -21,5 +25,14 @@ export class Connection {
   }
   get weight(): number {
     return this._weight;
+  }
+
+  toJSON() {
+    return {
+      id: this._id,
+      weight: this._weight,
+      from: this._from.id,
+      to: this._to.id,
+    };
   }
 }
