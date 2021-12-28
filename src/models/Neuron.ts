@@ -25,9 +25,31 @@ export enum NeuronType {
 }
 
 export class Neuron {
+  static startsAtSensoryNeuron = ({
+    type,
+    inputConnections,
+  }: Neuron): boolean => {
+    return (
+      type === NeuronType.SENSORY ||
+      !!inputConnections?.find((c) => Neuron.startsAtSensoryNeuron(c.from))
+    );
+  };
+
+  static endsAtMotorNeuron = ({ type, outputConnections }: Neuron): boolean => {
+    return (
+      type === NeuronType.MOTOR ||
+      !!outputConnections?.find((c) => Neuron.endsAtMotorNeuron(c.to))
+    );
+  };
+
+  static isValid = (neuron: Neuron): boolean => {
+    return (
+      Neuron.startsAtSensoryNeuron(neuron) && Neuron.endsAtMotorNeuron(neuron)
+    );
+  };
+
   private _id: string;
   private _type: NeuronType;
-  // private _bias: number;
   private _inputFunction?: IOFunc;
   private _outputFunction?: IOFunc;
   private _inputConnections?: Connection[];
@@ -55,8 +77,7 @@ export class Neuron {
       ? undefined
       : _outputConnections || [];
 
-    this._id = uuidv4();
-    // this._bias = Math.random();
+    this._id = uuidv4().substring(0, 8);
   }
 
   get id(): string {
@@ -89,16 +110,6 @@ export class Neuron {
       );
     }
   }
-  // get bias(): number {
-  //   return this._bias;
-  // }
-  // set bias(bias: number) {
-  //   this._bias = bias;
-  // }
-
-  // getRandomBias(): number {
-  //   return Math.random();
-  // }
 
   // returns value between (-1/0) and 1
   getOutputValue(): number {
@@ -110,10 +121,8 @@ export class Neuron {
         this._inputConnections
           .map((c) => c.from.getOutputValue() * c.weight)
           .reduce((a, b) => a + b, 0)
-        // + this.bias
       );
     } else {
-      // return this._bias;
       throw new Error(
         `Neuron has no input of any kind: ${JSON.stringify(this)}`
       );

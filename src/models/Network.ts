@@ -30,7 +30,7 @@ export class Network {
       });
     });
 
-    // TODO: cleanse connections starting or beginning at innerNeurons
+    this.cleanse();
   }
 
   get sensoryNeurons(): Neuron[] {
@@ -43,10 +43,16 @@ export class Network {
     return this._motorNeurons;
   }
 
-  private connectNeurons(inputNeuron: Neuron, outputNeuron: Neuron) {
+  private connectNeurons(inputNeuron: Neuron, outputNeuron: Neuron): void {
     const connection = new Connection(inputNeuron, outputNeuron);
     inputNeuron.addOutputConnection(connection);
     outputNeuron.addInputConnection(connection);
+  }
+
+  private cleanse(): void {
+    this._sensoryNeurons = this._sensoryNeurons.filter(Neuron.isValid);
+    this._innerNeurons = this._innerNeurons.filter(Neuron.isValid);
+    this._motorNeurons = this._motorNeurons.filter(Neuron.isValid);
   }
 
   read(): void {

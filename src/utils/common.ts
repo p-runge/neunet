@@ -9,5 +9,5 @@ export const tanh = (n: number) => {
 };
 
 export const random = (min = 0, max = 1): number => {
-  return Math.random() * (max - min) + min
+  return Math.random() * (max - min) + min;
 };

@@ -3,15 +3,16 @@ import { v4 as uuidv4 } from "uuid";
 import { Neuron } from ".";
 
 export class Connection {
+  public static MIN_WEIGHT = -4;
+  public static MAX_WEIGHT = 4;
+
   private _id: string;
   private _weight: number;
 
   constructor(private _from: Neuron, private _to: Neuron) {
     this._id = uuidv4();
 
-    const minWeight = -4;
-    const maxWeight = 4;
-    this._weight = random(minWeight, maxWeight);
+    this._weight = random(Connection.MIN_WEIGHT, Connection.MAX_WEIGHT);
   }
 
   get id(): string {
