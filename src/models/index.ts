@@ -1,3 +1,3 @@
-export * from "./Neuron";
-export * from "./Connection";
-export * from "./Network";
+export * from './Neuron';
+export * from './Connection';
+export * from './Network';

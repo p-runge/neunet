@@ -1,31 +1,37 @@
-import { Connection, Neuron, InnerNeuron } from ".";
+import { random } from '../utils';
+import { Connection, Neuron, InnerNeuron } from '.';
 
 export class Network {
   private _innerNeurons: Neuron[];
+
+  private static connectNeurons(inputNeuron: Neuron, outputNeuron: Neuron) {
+    const c = new Connection(inputNeuron, outputNeuron);
+    inputNeuron.addOutputConnection(c);
+    outputNeuron.addInputConnection(c);
+  }
 
   constructor(
     private _sensoryNeurons: Neuron[],
     private _motorNeurons: Neuron[],
     innerNeuronsAmount: number,
-    connectionDensity: number
+    connectionDensity: number,
   ) {
-    this._innerNeurons = [...Array(innerNeuronsAmount)].map(
-      () => new Neuron({} as InnerNeuron)
-    );
+    this._innerNeurons = [...Array(innerNeuronsAmount)].map(() => {
+      return new Neuron({} as InnerNeuron);
+    });
 
     const allInputNeurons: Neuron[] = this.sensoryNeurons.concat(
-      this.innerNeurons
+      this.innerNeurons,
     );
     const allOutputNeurons: Neuron[] = this.motorNeurons.concat(
-      this.innerNeurons
+      this.innerNeurons,
     );
     allInputNeurons.forEach((inputNeuron) => {
       allOutputNeurons.forEach((outputNeuron) => {
         if (
-          !inputNeuron.isDependingOn(outputNeuron) &&
-          Math.random() <= connectionDensity
+          !inputNeuron.isDependingOn(outputNeuron) && random() <= connectionDensity
         ) {
-          this.connectNeurons(inputNeuron, outputNeuron);
+          Network.connectNeurons(inputNeuron, outputNeuron);
         }
       });
     });
@@ -36,17 +42,13 @@ export class Network {
   get sensoryNeurons(): Neuron[] {
     return this._sensoryNeurons;
   }
+
   get innerNeurons(): Neuron[] {
     return this._innerNeurons;
   }
+
   get motorNeurons(): Neuron[] {
     return this._motorNeurons;
-  }
-
-  private connectNeurons(inputNeuron: Neuron, outputNeuron: Neuron): void {
-    const connection = new Connection(inputNeuron, outputNeuron);
-    inputNeuron.addOutputConnection(connection);
-    outputNeuron.addInputConnection(connection);
   }
 
   private cleanse(): void {
@@ -63,9 +65,15 @@ export class Network {
 
   toJSON() {
     return {
-      sensoryNeurons: this._sensoryNeurons.map((n) => n.toJSON()),
-      innerNeurons: this._innerNeurons.map((n) => n.toJSON()),
-      motorNeurons: this._motorNeurons.map((n) => n.toJSON()),
+      sensoryNeurons: this._sensoryNeurons.map((n) => {
+        return n.toJSON();
+      }),
+      innerNeurons: this._innerNeurons.map((n) => {
+        return n.toJSON();
+      }),
+      motorNeurons: this._motorNeurons.map((n) => {
+        return n.toJSON();
+      }),
     };
   }
 }
