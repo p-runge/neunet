@@ -1,7 +1,7 @@
 {
   "name": "neunet",
   "version": "0.1.0",
-  "description": "A basic framework for neural networks",
+  "description": "A model lib to set up a network of randomly generated neurons",
   "private": "true",
   "main": "src/index.ts",
   "scripts": {
